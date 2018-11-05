@@ -1,25 +1,43 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
 import './App.css';
+import Header from './Layout/Header';
+import Content from './Layout/Content';
+import Footer from './Layout/Footer';
+
 
 class App extends Component {
+  state = {
+    currentUser: {}
+  }
+
+  // componentDidMount (){
+  //  if(localStorage.jwt !== undefined){
+  //   fetch("http://localhost:3001/api/v1/profile", {
+  //     method: "GET",
+  //     credentials: "same-origin",
+  //     headers: {
+  //       "Authorization": `Bearer ${localStorage.getItem('jwt')}`,
+  //       "Content-Type": "application/json",
+  //       Accept: "application/json"
+  //     }
+  //   }).then(res => res.json())
+  //   .then(user => {
+  //     console.log("user", user);
+  //     this.setState({
+  //       currentUser: user
+  //     })}
+      
+  //   )}
+  // }  
+  
+
   render() {
+    console.log(this.state)
     return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
+      <div >
+        <Header/>
+        <Content>{this.props.children}</Content>
+        <Footer/>
       </div>
     );
   }
