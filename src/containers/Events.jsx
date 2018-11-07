@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import PropTypes from 'prop-types';
 import FormControl from '@material-ui/core/FormControl';
 import Input from '@material-ui/core/Input';
 import InputLabel from '@material-ui/core/InputLabel';
@@ -6,6 +7,7 @@ import Button from '@material-ui/core/Button';
 import Paper from '@material-ui/core/Paper';
 import withStyles from '@material-ui/core/styles/withStyles';
 import InputAdornment from '@material-ui/core/InputAdornment';
+import TextField from '@material-ui/core/TextField';
 import axios from 'axios';
 
 
@@ -39,16 +41,29 @@ const styles = theme => ({
   submit: {
     marginTop: theme.spacing.unit * 3,
   },
+  container: {
+    display: 'flex',
+    flexWrap: 'wrap',
+  },
+  textField: {
+    marginLeft: theme.spacing.unit,
+    marginRight: theme.spacing.unit,
+    width: 200,
+  },
+  title: {
+    textAlign: 'center',
+  }
 });
 
 
 class Events extends Component {
 
-  state={
-    title:"",
-    description:"",
+  state = {
+    title: "",
+    description: "",
     capacity: 0,
     price: 0.00,
+    dateTime: "2018-11-14T10:30",
   }
 
   handleInputChange = (event) => {
@@ -62,60 +77,77 @@ class Events extends Component {
   }
 
   createEvent = e => {
-    axios.post('http://localhost:3001/events', 
+    axios.post('http://localhost:3001/events',
       {
         "title": this.state.title,
         "description": this.state.description,
         "capacity": this.state.capacity,
-        "ticket_price" : this.state.price
+        "ticket_price": this.state.price,
+        "date_time": this.state.dateTime
       },
-      {headers: {'Authorization':`Bearer ${localStorage.getItem('jwt')}`}}
+      { headers: { 'Authorization': `Bearer ${localStorage.getItem('jwt')}` } }
     )
     this.props.history.push("/home")
   }
-  
+
   render() {
     const { classes } = this.props;
     return (
       <React.Fragment>
+      <h1 className={classes.title}>Create Your Poppin' Event</h1>
         <main className={classes.layout}>
           <Paper className={classes.paper}>
             <form className={classes.form} onSubmit={this.createEvent}>
               <FormControl margin="normal" required fullWidth>
-                <InputLabel htmlFor="title">Title</InputLabel>
+                <InputLabel htmlFor="title">Event Title</InputLabel>
                 <Input id="title" name="title" autoComplete="title" autoFocus
                   onChange={this.handleInputChange}
                   value={this.state.title}
-                 />
+                />
               </FormControl>
-              
+
               <FormControl margin="normal" required fullWidth>
                 <InputLabel htmlFor="description">Description</InputLabel>
-                <Input id="description" name="description" autoComplete="description" autoFocus
+                <Input id="description" name="description" autoComplete="description"
                   onChange={this.handleInputChange}
                   value={this.state.description}
-                 />
+                />
               </FormControl>
-              
+
               <FormControl margin="normal" required fullWidth>
                 <InputLabel htmlFor="capacity">Capacity</InputLabel>
-                <Input id="capacity" name="capacity" autoComplete="capacity" autoFocus
+                <Input id="capacity" name="capacity" autoComplete="capacity"
                   onChange={this.handleInputChange}
                   value={this.state.capacity}
                   type="number"
-                 />
+                />
               </FormControl>
-         
+
               <FormControl margin="normal" required fullWidth>
-                <InputLabel htmlFor="price">Price</InputLabel>
-                <Input id="price" name="price" autoComplete="price" autoFocus
+                <InputLabel htmlFor="price">Price per Seat</InputLabel>
+                <Input id="price" name="price" autoComplete="price"
                   onChange={this.handleInputChange}
                   value={this.state.price}
                   startAdornment={<InputAdornment position="start">$</InputAdornment>}
                   type="number"
-                 />
+                />
               </FormControl>
-              
+
+              <FormControl required fullWidth>
+                <TextField fullWidth
+                  id="datetime-local"
+                  label="Date and Time"
+                  type="datetime-local"
+                  // onChange={this.handleInputChange}
+                  value={this.state.dateTime}
+                  // defaultValue="2018-11-14T10:30"
+                  className={classes.textField}
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+               />
+              </FormControl>
+                
               <Button
                 type="submit"
                 fullWidth
@@ -132,5 +164,9 @@ class Events extends Component {
     )
   }
 }
+
+Events.propTypes = {
+  classes: PropTypes.object.isRequired,
+};
 
 export default (withStyles(styles)(Events));

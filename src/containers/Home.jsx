@@ -19,7 +19,7 @@ export default class Home extends Component {
   componentDidMount() {
     axios.get('http://localhost:3001/events')
     .then(response => {
-        // console.log(response.data)
+        console.log(response.data)
         this.setState({
             events: response.data
         })
@@ -31,6 +31,7 @@ export default class Home extends Component {
     this.setState({welcomeMessage: false})
     localStorage.removeItem('loginmessage');
   }
+
 
   render() {
     return (
@@ -61,6 +62,11 @@ export default class Home extends Component {
             description={item.description}
             capacity={item.capacity}
             price={item.ticket_price}
+            venueName={item.venue.name}
+            venueAddress={item.venue.street_address}
+            venueCity={item.venue.city}
+            venueState={item.venue.state}
+            venueZipCode={item.venue.zip_code}
           />
         </div>
       ))}
