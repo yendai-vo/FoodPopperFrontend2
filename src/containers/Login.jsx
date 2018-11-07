@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import axios from 'axios';
 import PropTypes from 'prop-types';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
@@ -48,90 +49,96 @@ const styles = theme => ({
 
 class Login extends Component {
   state = {
-    loggedIn: false,
-    username: '',
+    jwt: '',
+    email: '',
     password: '',
+  }
+
+  handleInputChange = (event) => {
+    const target = event.target;
+    const value = target.value;
+    const name = target.name;
+
+    this.setState({
+      [name]: value
+    });
   }
 
   validateUser = e => {
     e.preventDefault();
-    let username = e.target.username.value;
-    let password = e.target.password.value;
-
-    // console.log(username)
-    // console.log(password)
-
-    fetch("http://localhost:3001/api/v1/login", {
-      method: "POST",
-      credentials: "same-origin",
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json"
-      },
-      body: JSON.stringify({
-        user: {
-          username: username,
-          password: password
-        }
+    axios({
+      method: 'post',
+      url: 'http://localhost:3001/user_token',
+      data: {
+      "auth": {
+        "email": this.state.email,
+        "password": this.state.password
+      }
+    }})
+      .then(response => {
+        // this.setState({
+        //   jwt: response.data.jwt
+        // })
+        localStorage.setItem('jwt', response.data.jwt)
+        console.log(localStorage.getItem('jwt'))
       })
-    })
-    .then(res => res.json())
+      .catch(error => console.log(error))
       .then(
-        res =>
-          res.jwt
-            ? (localStorage.setItem("jwt", res.jwt),
-              this.setState({ loggedIn: true }))
-            : console.log(res)
-      )
-      .then(
-        _ => (this.state.loggedIn ? this.props.history.push("/home") : window.alert('Invalid Username or Password'))
+        _ => (this.props.history.push("/home"))
       );
   }
+
+  
 
   render() {
     const { classes } = this.props;
     return (
       <React.Fragment>
-      <CssBaseline />
-      <main className={classes.layout}>
-        <Paper className={classes.paper}>
-          <Avatar className={classes.avatar}>
-            <LockIcon />
-          </Avatar>
-          <Typography component="h1" variant="h5">
-            Sign in
-          </Typography>
-          <form className={classes.form} onSubmit={this.validateUser}>
-            <FormControl margin="normal" required fullWidth>
-              <InputLabel htmlFor="username">Username</InputLabel>
-              <Input id="username" name="username" autoComplete="username" autoFocus />
-            </FormControl>
-            <FormControl margin="normal" required fullWidth>
-              <InputLabel htmlFor="password">Password</InputLabel>
-              <Input
-                name="password"
-                type="password"
-                id="password"
-                autoComplete="current-password"
-              />
-            </FormControl>
-            <FormControlLabel
-              control={<Checkbox value="remember" color="primary" />}
-              label="Remember me"
-            />
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              color="primary"
-              className={classes.submit}
-            >
+        <CssBaseline />
+        <main className={classes.layout}>
+          <Paper className={classes.paper}>
+            <Avatar className={classes.avatar}>
+              <LockIcon />
+            </Avatar>
+            <Typography component="h1" variant="h5">
               Sign in
+          </Typography>
+            <form className={classes.form} onSubmit={this.validateUser}>
+              <FormControl margin="normal" required fullWidth>
+                <InputLabel htmlFor="email">Email</InputLabel>
+                <Input id="email" name="email" autoComplete="email" autoFocus
+                  value={this.state.email}
+                  onChange={this.handleInputChange}
+                 />
+              </FormControl>
+              <FormControl margin="normal" required fullWidth>
+                <InputLabel htmlFor="password">Password</InputLabel>
+                <Input
+                  name="password"
+                  type="password"
+                  id="password"
+                  autoComplete="current-password"
+                  value={this.state.password}
+                  onChange={this.handleInputChange}
+                />
+              </FormControl>
+              <FormControlLabel
+                control={<Checkbox value="remember" color="primary" />}
+                label="Remember me"
+              />
+              <Button
+                type="submit"
+                fullWidth
+                variant="contained"
+                color="primary"
+                className={classes.submit}
+              >
+                Sign in
             </Button>
-          </form>
-        </Paper>
-      </main>
-    </React.Fragment>
+            </form>
+          </Paper>
+        </main>
+      </React.Fragment>
     )
   }
 }

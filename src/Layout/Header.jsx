@@ -21,6 +21,9 @@ const styles = {
     marginLeft: -12,
     marginRight: 20,
   },
+  button: {
+    color: 'white',
+  },
 };
 
 class ButtonAppBar extends Component {
@@ -35,14 +38,14 @@ class ButtonAppBar extends Component {
     return (
       <div className={classes.root}>
         <AppBar position="static">
-          <Toolbar>
-            <IconButton className={classes.menuButton} color="inherit" aria-label="Menu">
+          <Toolbar >
+            {/* <IconButton className={classes.menuButton} color="secondary" aria-label="Menu">
               <MenuIcon />
-            </IconButton>
-            <Typography variant="h6" color="inherit" className={classes.grow}>
-              My App
+            </IconButton> */}
+            <Typography variant="h6" color="white" className={classes.grow}>
+              FoodPopper
             </Typography>
-            <Button ><Link to="/home">Home</Link></Button>
+            <Button className={classes.button}><Link to="/home">Home</Link></Button>
             <Button ><Link to="/events">Create Event</Link></Button>
             <Button ><Link to="/profile">Profile</Link></Button>
             <Button ><Link to="/signup">SignUp</Link></Button>

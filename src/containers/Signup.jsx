@@ -1,12 +1,11 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
+import axios from 'axios';
 import PropTypes from 'prop-types';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import FormControl from '@material-ui/core/FormControl';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Checkbox from '@material-ui/core/Checkbox';
 import Input from '@material-ui/core/Input';
 import InputLabel from '@material-ui/core/InputLabel';
 import LockIcon from '@material-ui/icons/LockOutlined';
@@ -48,28 +47,65 @@ const styles = theme => ({
 class Signup extends Component {
 
   state = {
-    success: false,
+    username: '',
+    email: '',
+    password: '',
+    bio: ''
   }  
 
-//   handleSubmit = (e) => {
-//     e.preventDefault()
-//     const data = new FormData(e.target);
+  // handleChange = (e) => {
+  //   console.log(e)
+  //   debugger
+  //   this.setState({
+  //     username: e.target.value[0],
+  //     email: e.target.value[1],
+  //     password: e.target.value[2],
+  //     bio: e.target.value[3]
+  //   })
+  // }
 
-//     fetch("http://localhost:3001/api/v1/users", {
-//       method: "POST",
-//       body: data
-//     })
-//     .then(res => res.json())
-//     .then(apidata => {
-//       // debugger
-//       localStorage.token = apidata.jwt
-//       this.setState({
-//         success: true
-//       })
-//     })
-//     .then(() => 
-//     this.props.history.push('/login'))
-//   }
+  // handleSubmit = (e) => {
+  //   e.preventDefault()
+  //   //debugger
+  //   const user = {
+  //     username: this.state.username,
+  //     email: this.state.email,
+  //     password: this.state.password,
+  //     bio: this.state.bio
+  //   }
+  //   axios.post("http://localhost:3001/users/create", {
+  //    user
+  //   })
+  //   .then(res => {
+  //     console.log(res);
+  //     this.setState({
+  //       user
+  //     })
+  //     //console.log(res.data)
+  //   })
+  //   .then(() => 
+  //   this.props.history.push('/login'))
+  // }
+  
+  handleSubmit = (e) => {
+    e.preventDefault()
+    const data = new FormData(e.target);
+
+    fetch("http://localhost:3001/users/create", {
+      method: "POST",
+      body: data
+    })
+    .then(res => res.json())
+    .then(apidata => {
+      // debugger
+      localStorage.token = apidata.jwt
+      this.setState({
+        success: true
+      })
+    })
+    .then(() => 
+    this.props.history.push('/login'))
+  }
 
   render() {
     
@@ -85,11 +121,13 @@ class Signup extends Component {
             <Typography component="h1" variant="h5">
               Sign Up
             </Typography>
-            <form className={classes.form} onSubmit={this.handleSubmit}>
+            <form className={classes.form} onSubmit={this.handleSubmit} >
   
               <FormControl margin="normal" required fullWidth>
                 <InputLabel htmlFor="username">Username</InputLabel>
-                <Input id="username" 
+                <Input 
+                
+                id="username" 
                 name="username" 
                 autoComplete="username" 
                 autoFocus 
