@@ -1,14 +1,19 @@
 import React, { Component } from 'react'
 import axios from 'axios';
+import Button from '@material-ui/core/Button';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
 import EventCard from '../components/EventCard';
 
 export default class Home extends Component {
 
-  constructor(props){
-    super(props)
-    this.state = {
-        events: []
-    }
+  state = {
+    events: [],
+    welcomeMessage: localStorage.getItem('loginmessage') === "true",
+    username: localStorage.getItem('username'),
   }
 
   componentDidMount() {
@@ -22,20 +27,44 @@ export default class Home extends Component {
     .catch(error => console.log(error))
   }
 
+  handleCloseDialog = () => {
+    this.setState({welcomeMessage: false})
+    localStorage.removeItem('loginmessage');
+  }
+
   render() {
-    // console.log(this.state.events)
-    return this.state.events.map(item => (
+    return (
       <div>
-      
-        <EventCard 
-          id={item.id}
-          title={item.title}
-          dateTime={item.date_time}
-          description={item.description}
-          capacity={item.capacity}
-          price={item.ticket_price}
-        />
-      </div>
-    ))
+      <Dialog
+          open={this.state.welcomeMessage}
+          onClose={this.handleCloseDialog}
+        >
+          <DialogTitle id="alert-dialog-title">Welcome {this.state.username}!</DialogTitle>
+          <DialogContent>
+            <DialogContentText id="alert-dialog-description">
+              Take a look at our upcoming events!
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={this.handleCloseDialog} color="primary">
+              Close
+            </Button>
+          </DialogActions>
+        </Dialog>
+      {this.state.events.map(item => (
+        <div>
+        
+          <EventCard 
+            id={item.id}
+            title={item.title}
+            dateTime={item.date_time}
+            description={item.description}
+            capacity={item.capacity}
+            price={item.ticket_price}
+          />
+        </div>
+      ))}
+    </div>)
+    
   }
 }

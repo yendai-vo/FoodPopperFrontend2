@@ -28,13 +28,14 @@ const styles = {
 
 class ButtonAppBar extends Component {
   
-  handleClick = () => {
+  handleLogoutClick = () => {
     localStorage.clear();
     this.props.history.push('/login')
   }
 
   render(){
     const { classes } = this.props;
+    const jwt = localStorage.getItem("jwt");
     return (
       <div className={classes.root}>
         <AppBar position="static">
@@ -46,11 +47,11 @@ class ButtonAppBar extends Component {
               FoodPopper
             </Typography>
             <Button className={classes.button}><Link to="/home">Home</Link></Button>
-            <Button ><Link to="/events">Create Event</Link></Button>
-            <Button ><Link to="/profile">Profile</Link></Button>
-            <Button ><Link to="/signup">SignUp</Link></Button>
-            <Button ><Link to="/login">Login</Link></Button>
-            <Button onClick={this.handleClick}>Logout</Button>
+            {jwt && <Button ><Link to="/events">Create Event</Link></Button>}
+            {jwt && <Button ><Link to="/profile">Profile</Link></Button>}
+            {!jwt && <Button ><Link to="/signup">SignUp</Link></Button>}
+            {!jwt && <Button ><Link to="/login">Login</Link></Button>}
+            {jwt && <Button onClick={this.handleLogoutClick}>Logout</Button>}
           </Toolbar>
         </AppBar>
       </div>

@@ -75,17 +75,20 @@ class Login extends Component {
         "password": this.state.password
       }
     }})
-      .then(response => {
-        // this.setState({
-        //   jwt: response.data.jwt
-        // })
-        localStorage.setItem('jwt', response.data.jwt)
-        console.log(localStorage.getItem('jwt'))
+    .then(response => {
+      localStorage.setItem('jwt', response.data.jwt)
+      localStorage.setItem('loginmessage', 'true')
+
+      axios.get('http://localhost:3001/auth', {headers: {'Authorization':`Bearer ${response.data.jwt}`}})
+      .then(res => {
+        localStorage.setItem('userId', res.data.id)
+        localStorage.setItem('username', res.data.username)
+        localStorage.setItem('bio', res.data.bio)
+        localStorage.setItem('email', res.data.email)
+        this.props.history.push("/home")
       })
-      .catch(error => console.log(error))
-      .then(
-        _ => (this.props.history.push("/home"))
-      );
+    })
+    .catch(error => console.log(error))
   }
 
   
