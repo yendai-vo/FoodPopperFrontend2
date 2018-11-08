@@ -53,59 +53,53 @@ class Signup extends Component {
     bio: ''
   }  
 
-  // handleChange = (e) => {
-  //   console.log(e)
-  //   debugger
-  //   this.setState({
-  //     username: e.target.value[0],
-  //     email: e.target.value[1],
-  //     password: e.target.value[2],
-  //     bio: e.target.value[3]
-  //   })
-  // }
+  handleSubmit = (e) => {
+    e.preventDefault();
 
+    axios({
+      method: 'post',
+      url: 'http://localhost:3001/users/create',
+      data: {
+        "user": {
+          "email": this.state.email,
+          "password": this.state.password,
+          "username": this.state.username,
+          "bio": this.state.bio
+        }
+      }
+    })
+    this.props.history.push("/login")
+  }
+
+  handleChange = (event) => {
+    const target = event.target;
+    const value = target.value;
+    const name = target.name;
+
+    this.setState({
+      [name]: value
+    });
+  }
+  
   // handleSubmit = (e) => {
   //   e.preventDefault()
-  //   //debugger
-  //   const user = {
-  //     username: this.state.username,
-  //     email: this.state.email,
-  //     password: this.state.password,
-  //     bio: this.state.bio
-  //   }
-  //   axios.post("http://localhost:3001/users/create", {
-  //    user
+  //   const data = new FormData(e.target);
+
+  //   fetch("http://localhost:3001/users/create", {
+  //     method: "POST",
+  //     body: data
   //   })
-  //   .then(res => {
-  //     console.log(res);
+  //   .then(res => res.json())
+  //   .then(apidata => {
+  //     // debugger
+  //     localStorage.token = apidata.jwt
   //     this.setState({
-  //       user
+  //       success: true
   //     })
-  //     //console.log(res.data)
   //   })
   //   .then(() => 
   //   this.props.history.push('/login'))
   // }
-  
-  handleSubmit = (e) => {
-    e.preventDefault()
-    const data = new FormData(e.target);
-
-    fetch("http://localhost:3001/users/create", {
-      method: "POST",
-      body: data
-    })
-    .then(res => res.json())
-    .then(apidata => {
-      // debugger
-      localStorage.token = apidata.jwt
-      this.setState({
-        success: true
-      })
-    })
-    .then(() => 
-    this.props.history.push('/login'))
-  }
 
   render() {
     
@@ -126,7 +120,8 @@ class Signup extends Component {
               <FormControl margin="normal" required fullWidth>
                 <InputLabel htmlFor="username">Username</InputLabel>
                 <Input 
-                
+                value={this.state.username}
+                onChange={this.handleChange}
                 id="username" 
                 name="username" 
                 autoComplete="username" 
@@ -141,6 +136,8 @@ class Signup extends Component {
                   type="email"
                   id="email"
                   autoComplete="email"
+                  value={this.state.email}
+                  onChange={this.handleChange}
                 />
               </FormControl>
   
@@ -150,6 +147,8 @@ class Signup extends Component {
                   name="password"
                   type="password"
                   id="password"
+                  value={this.state.password}
+                  onChange={this.handleChange}
                 />
               </FormControl>
 
@@ -160,6 +159,8 @@ class Signup extends Component {
                   multiline
                   rowsMax="4"
                   id="bio"
+                  value={this.state.bio}
+                  onChange={this.handleChange}
                 />
               </FormControl>
 
