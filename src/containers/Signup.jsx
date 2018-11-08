@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { withRouter } from 'react-router-dom';
 import axios from 'axios';
 import PropTypes from 'prop-types';
 import Avatar from '@material-ui/core/Avatar';
@@ -43,6 +42,7 @@ const styles = theme => ({
     submit: {
       marginTop: theme.spacing.unit * 3,
     },
+    
   });
 class Signup extends Component {
 
@@ -81,28 +81,7 @@ class Signup extends Component {
     });
   }
   
-  // handleSubmit = (e) => {
-  //   e.preventDefault()
-  //   const data = new FormData(e.target);
-
-  //   fetch("http://localhost:3001/users/create", {
-  //     method: "POST",
-  //     body: data
-  //   })
-  //   .then(res => res.json())
-  //   .then(apidata => {
-  //     // debugger
-  //     localStorage.token = apidata.jwt
-  //     this.setState({
-  //       success: true
-  //     })
-  //   })
-  //   .then(() => 
-  //   this.props.history.push('/login'))
-  // }
-
   render() {
-    
     const { classes } = this.props;
     return (
         <React.Fragment>

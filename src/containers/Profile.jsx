@@ -18,7 +18,7 @@ export default class Profile extends Component {
       .then(res => {
         this.setState({
           reservations: res.data
-        })
+        },console.log(res.data))
       })
   }
 
@@ -33,6 +33,7 @@ export default class Profile extends Component {
           {this.state.reservations.map(item => (
             <div>
               <p>{item.title}</p>
+              
             </div>
           ))}
         </div>

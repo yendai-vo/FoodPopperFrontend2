@@ -99,14 +99,14 @@ class EventCard extends React.Component {
     this.setState({
       isActive: true
     })
-    // console.log('submit button was clicked')
+    //console.log(e)
     axios.post('http://localhost:3001/reservations', {
       "no_of_tickets": this.state.noOfTickets,
       "is_active": this.state.isActive,
       },
       {
         headers: { 'Authorization': `Bearer ${localStorage.getItem('jwt')}` }
-      }
+      },console.log(e)
     )
    
   }
