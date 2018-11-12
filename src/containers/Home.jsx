@@ -25,7 +25,7 @@ export default class Home extends Component {
   componentDidMount() {
     axios.get('http://localhost:3001/events')
       .then(response => {
-        console.log(response.data)
+        // console.log(response.data)
         this.setState({
           events: response.data,
           eventsFetched: true,
@@ -48,9 +48,9 @@ export default class Home extends Component {
     if(this.state.search !== ''){
       this.setState({ filteredEvents: this.state.events.filter((event) => {
         return event.title.toLowerCase().includes(this.state.search.toLowerCase())
-      })});
+      })})
     } else {
-      this.setState({ filteredEvents:this.state.events });
+      this.setState({ filteredEvents:this.state.events})
     }
   }
 

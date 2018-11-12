@@ -66,14 +66,19 @@ class EventCard extends React.Component {
     reservation: [],
     noOfTickets: 1,
     isActive: false,
+    chosenEvent: [],
   };
 
   handleExpandClick = () => {
     this.setState(state => ({ expanded: !state.expanded }));
   };
 
-  handleOpenReservation = () => {
-    this.setState({ open: true });
+  handleOpenReservation = (e) => {
+    console.log(e)
+    this.setState({ 
+      open: true,
+      
+    });
   };
 
   handleCloseReservation = () => {
@@ -91,48 +96,46 @@ class EventCard extends React.Component {
   handleChange = reservation => event => {
     this.setState({
       noOfTickets: event.target.value,
+      isActive: true
     });
   };
 
   handleReservationSubmit = (e) => {
     e.preventDefault()
-    this.setState({
-      isActive: true
-    })
-    //console.log(e)
+    
     axios.post('http://localhost:3001/reservations', {
       "no_of_tickets": this.state.noOfTickets,
       "is_active": this.state.isActive,
-      // "event_id":
-      // "user_id": 
+      "event_id": this.props.id,
       },
       {
         headers: { 'Authorization': `Bearer ${localStorage.getItem('jwt')}` }
       }
     )
-   
   }
 
   render() {
     const { classes, title, dateTime, description, capacity, price, venueName, venueAddress, venueCity, venueState, venueZipCode, id } = this.props;
 
     return (
-      <Paper className={classes.root}>
-        <Grid container spacing={16}>
-          <Grid item>
+      <Paper className={classes.root} >
+      {/* style={{float:"left"}} */}
+        <Grid container spacing={16} >
+          <Grid item >
             <ButtonBase className={classes.image}>
               <img className={classes.img} alt="complex" src='https://images.pexels.com/photos/1267320/pexels-photo-1267320.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260' />
             </ButtonBase>
           </Grid>
 
-          <Grid item xs={12} sm container>
+          <Grid item xs={12} sm container >
             <Grid item xs container direction="column" spacing={16}>
-              <Grid item xs>
+              <Grid item xs key={id}>
                 <Typography gutterBottom variant="subtitle1">
                   {title}
                 </Typography><br></br>
                 <Typography gutterBottom>{description}</Typography><br></br>
                 <IconButton
+                  style={{float:"right"}}
                   className={classnames(classes.expand, {
                     [classes.expandOpen]: this.state.expanded,
                   })}
@@ -140,7 +143,7 @@ class EventCard extends React.Component {
                   aria-expanded={this.state.expanded}
                   aria-label="Show more"
                 >
-                  <ExpandMoreIcon />
+                <ExpandMoreIcon />
                 </IconButton>
                 <Collapse in={this.state.expanded} timeout="auto" unmountOnExit>
 
