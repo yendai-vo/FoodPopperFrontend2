@@ -9,6 +9,7 @@ import withStyles from '@material-ui/core/styles/withStyles';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import TextField from '@material-ui/core/TextField';
 import axios from 'axios';
+// import Venue from '../components/Venue';
 
 
 const styles = theme => ({
@@ -54,16 +55,19 @@ const styles = theme => ({
     textAlign: 'center',
   }
 });
-
-
 class Events extends Component {
 
   state = {
-    title: "",
-    description: "",
-    capacity: 0,
+    title: '',
+    description: '',
+    capacity: null,
     price: 0.00,
     dateTime: "2018-11-14T10:30",
+    venueName: '',
+    venueAddress: '',
+    venueCity: '',
+    venueState: '',
+    venueZipCode: null,
   }
 
   handleInputChange = (event) => {
@@ -77,24 +81,51 @@ class Events extends Component {
   }
 
   createEvent = e => {
-    axios.post('http://localhost:3001/events',
+    e.preventDefault();
+
+    axios.post('http://localhost:3001/venues',
+      {
+        "name": this.state.venueName,
+        "street_address": this.state.venueAddress,
+        "city": this.state.venueCity,
+        "state": this.state.venueState,
+        "zip_code": this.state.venueZipCode,
+      },
+      { headers: { 'Authorization': `Bearer ${localStorage.getItem('jwt')}` } }
+    ).then(res => {
+      axios.post('http://localhost:3001/events',
       {
         "title": this.state.title,
         "description": this.state.description,
         "capacity": this.state.capacity,
         "ticket_price": this.state.price,
-        "date_time": this.state.dateTime
+        "date_time": this.state.dateTime,
+        "venue_id": res.data.venue.id
       },
       { headers: { 'Authorization': `Bearer ${localStorage.getItem('jwt')}` } }
     )
-    this.props.history.push("/home")
+    })
+
+    this.props.history.push("/home", {eventsFetched: false})
+  }
+
+  getVenues = (e) => {
+    e.preventDefault();
+
+    axios.get('http://localhost:3001/venues')
+      .then(response => {
+        this.setState({
+          venues: response.data
+        })
+      })
+      .catch(error => console.log(error))
   }
 
   render() {
     const { classes } = this.props;
     return (
       <React.Fragment>
-      <h1 className={classes.title}>Create Your Poppin' Event</h1>
+        <h1 className={classes.title}>Create Your Poppin' Event</h1>
         <main className={classes.layout}>
           <Paper className={classes.paper}>
             <form className={classes.form} onSubmit={this.createEvent}>
@@ -138,16 +169,66 @@ class Events extends Component {
                   id="datetime-local"
                   label="Date and Time"
                   type="datetime-local"
-                  // onChange={this.handleInputChange}
+                  onChange={this.handleInputChange}
                   value={this.state.dateTime}
                   // defaultValue="2018-11-14T10:30"
                   className={classes.textField}
                   InputLabelProps={{
                     shrink: true,
                   }}
-               />
+                />
               </FormControl>
-                
+
+              <FormControl >
+                  <Input id="image" name="image" type="file"
+                  onChange={this.handleInputChange}
+                  value={this.state.image} />
+              </FormControl>
+                  <br></br>
+                  <br></br>
+                  <p>&nbsp;</p>
+                  <hr></hr>
+              <p>Venue Information </p>
+              {/* <Venue /> */}
+              <FormControl required fullWidth>
+                <InputLabel htmlFor="venueName">Name</InputLabel>
+                <Input id="venueName" name="venueName" autoComplete="venueName"
+                  onChange={this.handleInputChange}
+                  value={this.state.venueName}
+                />
+              </FormControl>
+
+              <FormControl required fullWidth>
+                <InputLabel htmlFor="venueAddress">Address</InputLabel>
+                <Input id="venueAddress" name="venueAddress" autoComplete="venueAddress"
+                  onChange={this.handleInputChange}
+                  value={this.state.venueAddress}
+                />
+              </FormControl>
+
+              <FormControl required fullWidth>
+                <InputLabel htmlFor="venueCity">City</InputLabel>
+                <Input id="venueCity" name="venueCity" autoComplete="venueCity"
+                  onChange={this.handleInputChange}
+                  value={this.state.venueCity}
+                />
+              </FormControl>
+
+              <FormControl required fullWidth>
+                <InputLabel htmlFor="venueState">State</InputLabel>
+                <Input id="venueState" name="venueState" autoComplete="venueState"
+                  onChange={this.handleInputChange}
+                  value={this.state.venueState}
+                />
+              </FormControl>
+
+              <FormControl required fullWidth>
+                <InputLabel htmlFor="venueZipCode">Zip Code</InputLabel>
+                <Input id="venueZipCode" name="venueZipCode" autoComplete="venueZipCode"
+                  onChange={this.handleInputChange}
+                  value={this.state.venueZipCode}
+                />
+              </FormControl>
               <Button
                 type="submit"
                 fullWidth

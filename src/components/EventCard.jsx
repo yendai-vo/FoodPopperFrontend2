@@ -103,16 +103,18 @@ class EventCard extends React.Component {
     axios.post('http://localhost:3001/reservations', {
       "no_of_tickets": this.state.noOfTickets,
       "is_active": this.state.isActive,
+      // "event_id":
+      // "user_id": 
       },
       {
         headers: { 'Authorization': `Bearer ${localStorage.getItem('jwt')}` }
-      },console.log(e)
+      }
     )
    
   }
 
   render() {
-    const { classes, title, dateTime, description, capacity, price, venueName, venueAddress, venueCity, venueState, venueZipCode } = this.props;
+    const { classes, title, dateTime, description, capacity, price, venueName, venueAddress, venueCity, venueState, venueZipCode, id } = this.props;
 
     return (
       <Paper className={classes.root}>
@@ -167,6 +169,7 @@ class EventCard extends React.Component {
                   <DialogContent>
                     <DialogContentText id="alert-dialog-description">
                       <Reservation
+                        key={id}
                         title={title}
                         dateTime={dateTime}
                         price={price}

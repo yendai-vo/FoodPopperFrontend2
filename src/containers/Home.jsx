@@ -9,12 +9,14 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 
 import SearchBar from '../components/SearchBar';
 import EventCard from '../components/EventCard';
-
+import Map from '../components/Map';
 
 export default class Home extends Component {
 
   state = {
     events: [],
+    filteredEvents: [],
+    eventsFetched: false,
     welcomeMessage: localStorage.getItem('loginmessage') === "true",
     username: localStorage.getItem('username'),
     search: '',
@@ -25,11 +27,13 @@ export default class Home extends Component {
       .then(response => {
         console.log(response.data)
         this.setState({
-          events: response.data
+          events: response.data,
+          eventsFetched: true,
         })
       })
       .catch(error => console.log(error))
   }
+
 
   handleCloseDialog = () => {
     this.setState({ welcomeMessage: false })
@@ -39,7 +43,15 @@ export default class Home extends Component {
   handleChange = (searchTerm) => {
     this.setState({
       search: searchTerm
-    },console.log(searchTerm))
+    })
+    
+    if(this.state.search !== ''){
+      this.setState({ filteredEvents: this.state.events.filter((event) => {
+        return event.title.toLowerCase().includes(this.state.search.toLowerCase())
+      })});
+    } else {
+      this.setState({ filteredEvents:this.state.events });
+    }
   }
 
   filterEvents = () => {
@@ -54,6 +66,14 @@ export default class Home extends Component {
 
 
   render() {
+    axios.get('http://localhost:3001/events')
+    .then(response => {
+      if(this.state.events.length !== response.data.length){
+      this.setState({
+        events: response.data,
+      })}
+    })
+    .catch(error => console.log(error))
     return (
       <div>
         <p>Welcome, {this.state.username}!</p>
@@ -74,7 +94,7 @@ export default class Home extends Component {
             </Button>
           </DialogActions>
         </Dialog>
-        {this.state.events.map(item => (
+        {this.filterEvents().map(item => (
           <div>
             {this.state.events ? 
               <EventCard
@@ -89,11 +109,17 @@ export default class Home extends Component {
                 venueCity={item.venue.city}
                 venueState={item.venue.state}
                 venueZipCode={item.venue.zip_code}
-                events={this.filterEvents()}
               />
             : <p>Loading</p>}
           </div>
         ))}
+        <Map 
+          isMarkerShown
+  googleMapURL="https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places"
+  loadingElement={<div style={{ height: `100%` }} />}
+  containerElement={<div style={{ height: `400px` }} />}
+  mapElement={<div style={{ height: `100%` }} />}
+        />
       </div>)
 
   }
