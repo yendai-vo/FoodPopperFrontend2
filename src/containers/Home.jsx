@@ -25,7 +25,7 @@ export default class Home extends Component {
   componentDidMount() {
     axios.get('http://localhost:3001/events')
       .then(response => {
-        // console.log(response.data)
+        console.log(response.data)
         this.setState({
           events: response.data,
           eventsFetched: true,
@@ -55,6 +55,7 @@ export default class Home extends Component {
   }
 
   filterEvents = () => {
+    console.log(this.state.events)
     if(this.state.search !== ''){
       return this.state.events.filter((event) => {
         return event.title.toLowerCase().includes(this.state.search.toLowerCase())
@@ -96,14 +97,16 @@ export default class Home extends Component {
         </Dialog>
         {this.filterEvents().map(item => (
           <div>
-            {this.state.events ? 
+            {this.state.events ?
               <EventCard
+                userId={item.user_id}
                 id={item.id}
                 title={item.title}
                 dateTime={item.date_time}
                 description={item.description}
                 capacity={item.capacity}
                 price={item.ticket_price}
+                image={item.image_url}
                 venueName={item.venue.name}
                 venueAddress={item.venue.street_address}
                 venueCity={item.venue.city}

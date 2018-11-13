@@ -6,9 +6,7 @@ import Footer from './Layout/Footer';
 
 
 class App extends Component {
-  state = {
-    currentUser: {}
-  }
+ 
 
   // componentDidMount (){
   //  if(localStorage.jwt !== undefined){
@@ -32,7 +30,7 @@ class App extends Component {
   
 
   render() {
-    console.log(this.state)
+   
     return (
       <div >
         <Header/>

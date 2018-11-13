@@ -63,50 +63,74 @@ class Events extends Component {
     capacity: null,
     price: 0.00,
     dateTime: "2018-11-14T10:30",
+    image_url: '',
     venueName: '',
     venueAddress: '',
     venueCity: '',
     venueState: '',
     venueZipCode: null,
+    events: []
   }
 
   handleInputChange = (event) => {
     const target = event.target;
     const value = target.value;
-    const name = target.name;
+    const name = target.id;
 
     this.setState({
       [name]: value
     });
   }
 
+  // componentDidMount() {
+  //   fetch("http://localhost:3001/events")
+  //     .then(res => res.json())
+  //     .then(data => this.setState({ events: data }));
+  // }
+
   createEvent = e => {
     e.preventDefault();
 
-    axios.post('http://localhost:3001/venues',
-      {
-        "name": this.state.venueName,
-        "street_address": this.state.venueAddress,
-        "city": this.state.venueCity,
-        "state": this.state.venueState,
-        "zip_code": this.state.venueZipCode,
-      },
-      { headers: { 'Authorization': `Bearer ${localStorage.getItem('jwt')}` } }
-    ).then(res => {
-      axios.post('http://localhost:3001/events',
-      {
-        "title": this.state.title,
-        "description": this.state.description,
-        "capacity": this.state.capacity,
-        "ticket_price": this.state.price,
-        "date_time": this.state.dateTime,
-        "venue_id": res.data.venue.id
-      },
-      { headers: { 'Authorization': `Bearer ${localStorage.getItem('jwt')}` } }
-    )
-    })
+    const data = new FormData(e.target);
 
-    this.props.history.push("/home", {eventsFetched: false})
+    fetch('http://localhost:3001/events', {
+      method: 'POST',
+      headers: { 
+        'Authorization': `Bearer ${localStorage.getItem('jwt')}` 
+      },
+      body: data
+
+    })
+    .then(res => this.props.history.push("/home", {eventsFetched: false}))
+    // const data = new FormData(e.target);
+
+    // axios.post('http://localhost:3001/venues',
+    //   {
+    //     "name": this.state.venueName,
+    //     "street_address": this.state.venueAddress,
+    //     "city": this.state.venueCity,
+    //     "state": this.state.venueState,
+    //     "zip_code": this.state.venueZipCode,
+    //   },
+    //   { headers: { 'Authorization': `Bearer ${localStorage.getItem('jwt')}` } }
+    // ).then(res => {
+    //   console.log(this.state.image_url);
+    //   axios.post('http://localhost:3001/events',
+    //   {
+    //     "title": this.state.title,
+    //     "description": this.state.description,
+    //     "capacity": this.state.capacity,
+    //     "ticket_price": this.state.price,
+    //     "date_time": this.state.dateTime,
+    //     "venue_id": res.data.venue.id,
+    //     "image_url": this.state.image_url
+    //     // body: data
+        
+    //   },
+    //   { headers: { 'Authorization': `Bearer ${localStorage.getItem('jwt')}` } }
+    // )
+    // .then(res => this.props.history.push("/home", {eventsFetched: false})) 
+    // })
   }
 
   getVenues = (e) => {
@@ -123,6 +147,7 @@ class Events extends Component {
 
   render() {
     const { classes } = this.props;
+    console.log(this.state);
     return (
       <React.Fragment>
         <h1 className={classes.title}>Create Your Poppin' Event</h1>
@@ -131,7 +156,7 @@ class Events extends Component {
             <form className={classes.form} onSubmit={this.createEvent}>
               <FormControl margin="normal" required fullWidth>
                 <InputLabel htmlFor="title">Event Title</InputLabel>
-                <Input id="title" name="title" autoComplete="title" autoFocus
+                <Input id="title" name="event[title]" autoComplete="title" autoFocus
                   onChange={this.handleInputChange}
                   value={this.state.title}
                 />
@@ -139,7 +164,7 @@ class Events extends Component {
 
               <FormControl margin="normal" required fullWidth>
                 <InputLabel htmlFor="description">Description</InputLabel>
-                <Input id="description" name="description" autoComplete="description"
+                <Input id="description" name="event[description]" autoComplete="description"
                   onChange={this.handleInputChange}
                   value={this.state.description}
                 />
@@ -147,7 +172,7 @@ class Events extends Component {
 
               <FormControl margin="normal" required fullWidth>
                 <InputLabel htmlFor="capacity">Capacity</InputLabel>
-                <Input id="capacity" name="capacity" autoComplete="capacity"
+                <Input id="capacity" name="event[capacity]" autoComplete="capacity"
                   onChange={this.handleInputChange}
                   value={this.state.capacity}
                   type="number"
@@ -156,7 +181,7 @@ class Events extends Component {
 
               <FormControl margin="normal" required fullWidth>
                 <InputLabel htmlFor="price">Price per Seat</InputLabel>
-                <Input id="price" name="price" autoComplete="price"
+                <Input id="price" name="event[ticket_price]" autoComplete="price"
                   onChange={this.handleInputChange}
                   value={this.state.price}
                   startAdornment={<InputAdornment position="start">$</InputAdornment>}
@@ -169,6 +194,7 @@ class Events extends Component {
                   id="datetime-local"
                   label="Date and Time"
                   type="datetime-local"
+                  name="event[date_time]"
                   onChange={this.handleInputChange}
                   value={this.state.dateTime}
                   // defaultValue="2018-11-14T10:30"
@@ -180,9 +206,9 @@ class Events extends Component {
               </FormControl>
 
               <FormControl >
-                  <Input id="image" name="image" type="file"
+                  <Input id="image_url" name="event[image]" type="file"
                   onChange={this.handleInputChange}
-                  value={this.state.image} />
+                  value={this.state.image_url} />
               </FormControl>
                   <br></br>
                   <br></br>
@@ -192,7 +218,7 @@ class Events extends Component {
               {/* <Venue /> */}
               <FormControl required fullWidth>
                 <InputLabel htmlFor="venueName">Name</InputLabel>
-                <Input id="venueName" name="venueName" autoComplete="venueName"
+                <Input id="venueName" name="event[venue_attributes][name]" autoComplete="venueName"
                   onChange={this.handleInputChange}
                   value={this.state.venueName}
                 />
@@ -200,7 +226,7 @@ class Events extends Component {
 
               <FormControl required fullWidth>
                 <InputLabel htmlFor="venueAddress">Address</InputLabel>
-                <Input id="venueAddress" name="venueAddress" autoComplete="venueAddress"
+                <Input id="venueAddress" name="event[venue_attributes][street_address]" autoComplete="venueAddress"
                   onChange={this.handleInputChange}
                   value={this.state.venueAddress}
                 />
@@ -208,7 +234,7 @@ class Events extends Component {
 
               <FormControl required fullWidth>
                 <InputLabel htmlFor="venueCity">City</InputLabel>
-                <Input id="venueCity" name="venueCity" autoComplete="venueCity"
+                <Input id="venueCity" name="event[venue_attributes][city]" autoComplete="venueCity"
                   onChange={this.handleInputChange}
                   value={this.state.venueCity}
                 />
@@ -216,7 +242,7 @@ class Events extends Component {
 
               <FormControl required fullWidth>
                 <InputLabel htmlFor="venueState">State</InputLabel>
-                <Input id="venueState" name="venueState" autoComplete="venueState"
+                <Input id="venueState" name="event[venue_attributes][state]" autoComplete="venueState"
                   onChange={this.handleInputChange}
                   value={this.state.venueState}
                 />
@@ -224,7 +250,7 @@ class Events extends Component {
 
               <FormControl required fullWidth>
                 <InputLabel htmlFor="venueZipCode">Zip Code</InputLabel>
-                <Input id="venueZipCode" name="venueZipCode" autoComplete="venueZipCode"
+                <Input id="venueZipCode" name="event[venue_attributes][zip_code]" autoComplete="venueZipCode"
                   onChange={this.handleInputChange}
                   value={this.state.venueZipCode}
                 />

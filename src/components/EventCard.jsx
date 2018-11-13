@@ -1,6 +1,7 @@
 import React from 'react';
 import axios from 'axios';
 import Reservation from '../components/Reservation';
+import EditEvent from '../components/EditEvent';
 
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
@@ -67,31 +68,28 @@ class EventCard extends React.Component {
     noOfTickets: 1,
     isActive: false,
     chosenEvent: [],
+    editOpen: false
   };
 
   handleExpandClick = () => {
     this.setState(state => ({ expanded: !state.expanded }));
   };
 
-  handleOpenReservation = (e) => {
-    console.log(e)
-    this.setState({ 
-      open: true,
-      
-    });
+  handleOpenReservation = () => {
+    this.setState({ open: true });
   };
 
   handleCloseReservation = () => {
     this.setState({ open: false });
   };
 
-  getDate = () => {
-    let str = this.state.dateTime;
-    str.split('T');
-    this.setState({
-      dateTime: str
-    })
-  }
+  // getDate = () => {
+  //   let str = this.state.dateTime;
+  //   str.split('T');
+  //   this.setState({
+  //     dateTime: str
+  //   })
+  // }
 
   handleChange = reservation => event => {
     this.setState({
@@ -99,6 +97,11 @@ class EventCard extends React.Component {
       isActive: true
     });
   };
+
+  handleClickEdit = () => {
+    console.log('edit was clicked')
+    this.setState({ editOpen: true })
+  }
 
   handleReservationSubmit = (e) => {
     e.preventDefault()
@@ -112,18 +115,19 @@ class EventCard extends React.Component {
         headers: { 'Authorization': `Bearer ${localStorage.getItem('jwt')}` }
       }
     )
+    this.setState({ open: false });
   }
 
   render() {
-    const { classes, title, dateTime, description, capacity, price, venueName, venueAddress, venueCity, venueState, venueZipCode, id } = this.props;
-
+    const { classes, title, dateTime, description, capacity, price, venueName, venueAddress, venueCity, venueState, venueZipCode, id, image, userId } = this.props;
+    console.log(userId)
     return (
       <Paper className={classes.root} >
       {/* style={{float:"left"}} */}
         <Grid container spacing={16} >
           <Grid item >
             <ButtonBase className={classes.image}>
-              <img className={classes.img} alt="complex" src='https://images.pexels.com/photos/1267320/pexels-photo-1267320.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260' />
+              <img className={classes.img} alt="complex" src={image} />
             </ButtonBase>
           </Grid>
 
@@ -161,7 +165,16 @@ class EventCard extends React.Component {
 
               </Grid>
               <Grid item>
-                <Button onClick={this.handleOpenReservation}>Reserve A Spot</Button>
+                <Button color="secondary" onClick={this.handleOpenReservation}>Reserve A Spot</Button>
+                { userId == localStorage.userId ? <Button onClick={this.handleClickEdit}>Edit Your Event</Button> : null }
+                
+                
+                {this.state.editOpen ? 
+                  <Dialog><EditEvent 
+                    title={title}
+                  /></Dialog>: null}
+                
+                
                 <Dialog
                   open={this.state.open}
                   onClose={this.handleClose}
@@ -209,7 +222,6 @@ class EventCard extends React.Component {
               {/* <Typography variant="subtitle1">$19.00</Typography> */}
             </Grid>
           </Grid>
-
         </Grid>
       </Paper>
     );
