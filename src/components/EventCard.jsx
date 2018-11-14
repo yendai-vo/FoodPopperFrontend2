@@ -83,6 +83,14 @@ class EventCard extends React.Component {
     this.setState({ open: false });
   };
 
+  handleOpenEdit = () => {
+    this.setState({ editOpen: true });
+  };
+
+  handleCloseEdit = () => {
+    this.setState({ editOpen: false });
+  };
+
   // getDate = () => {
   //   let str = this.state.dateTime;
   //   str.split('T');
@@ -98,11 +106,6 @@ class EventCard extends React.Component {
     });
   };
 
-  handleClickEdit = () => {
-    console.log('edit was clicked')
-    this.setState({ editOpen: true })
-  }
-
   handleReservationSubmit = (e) => {
     e.preventDefault()
     
@@ -116,6 +119,15 @@ class EventCard extends React.Component {
       }
     )
     this.setState({ open: false });
+  }
+
+  handleEditSubmit = (e) => {
+    axios.patch('http://localhost:3001/events')
+    .then((success) => {
+      console.log(success);
+    }).catch((error) => {
+      console.log(error);
+    });
   }
 
   render() {
@@ -166,18 +178,52 @@ class EventCard extends React.Component {
               </Grid>
               <Grid item>
                 <Button color="secondary" onClick={this.handleOpenReservation}>Reserve A Spot</Button>
-                { userId == localStorage.userId ? <Button onClick={this.handleClickEdit}>Edit Your Event</Button> : null }
+                { userId == localStorage.userId ? <Button onClick={this.handleOpenEdit}>Edit Your Event</Button> : null }
                 
-                
-                {this.state.editOpen ? 
-                  <Dialog><EditEvent 
-                    title={title}
-                  /></Dialog>: null}
+                <Dialog
+                  open={this.state.editOpen}
+                  onClose={this.handleCloseEdit}
+                  aria-labelledby="alert-dialog-title"
+                  aria-describedby="alert-dialog-description"
+                >
+                  
+                  <DialogContent>
+                    <DialogContentText id="alert-dialog-description">
+                      <EditEvent 
+                        title={title}
+                        description={description}
+                        dateTime={dateTime}
+                        capacity={capacity}
+                      />
+                    </DialogContentText>
+                  </DialogContent>
+                  <DialogActions>
+                    <Button onClick={this.handleCloseEdit} color="primary">Cancel</Button>
+                    <Button type='submit' onClick={this.handleEditSubmit} color="primary">Submit Edit</Button>
+
+                  </DialogActions>
+                </Dialog>
+                {/* {this.state.editOpen ? 
+                  <Dialog
+                    open={this.state.openEdit}
+                    onClose={this.handleCloseEdit}
+                    aria-labelledby="alert-dialog-title"
+                    aria-describedby="alert-dialog-description"
+                  >
+                    <DialogTitle id="form-dialog-title">Edit Your Event Here!</DialogTitle>
+                    <DialogContent>
+                      <DialogContentText>
+                        <EditEvent 
+                          title={title}
+                        />
+                      </DialogContentText>
+                    </DialogContent>
+                  </Dialog>: null} */}
                 
                 
                 <Dialog
                   open={this.state.open}
-                  onClose={this.handleClose}
+                  onClose={this.handleCloseReservation}
                   aria-labelledby="alert-dialog-title"
                   aria-describedby="alert-dialog-description"
                 >

@@ -147,12 +147,13 @@ class Events extends Component {
 
   render() {
     const { classes } = this.props;
-    console.log(this.state);
+    //console.log(this.state);
     return (
       <React.Fragment>
         <h1 className={classes.title}>Create Your Poppin' Event</h1>
         <main className={classes.layout}>
           <Paper className={classes.paper}>
+          <h1>Event Information </h1>
             <form className={classes.form} onSubmit={this.createEvent}>
               <FormControl margin="normal" required fullWidth>
                 <InputLabel htmlFor="title">Event Title</InputLabel>
@@ -167,6 +168,7 @@ class Events extends Component {
                 <Input id="description" name="event[description]" autoComplete="description"
                   onChange={this.handleInputChange}
                   value={this.state.description}
+                  multiline
                 />
               </FormControl>
 
@@ -180,7 +182,7 @@ class Events extends Component {
               </FormControl>
 
               <FormControl margin="normal" required fullWidth>
-                <InputLabel htmlFor="price">Price per Seat</InputLabel>
+                <InputLabel htmlFor="price">Price per Seat (Cannot be edited later on)</InputLabel>
                 <Input id="price" name="event[ticket_price]" autoComplete="price"
                   onChange={this.handleInputChange}
                   value={this.state.price}
@@ -214,8 +216,8 @@ class Events extends Component {
                   <br></br>
                   <p>&nbsp;</p>
                   <hr></hr>
-              <p>Venue Information </p>
-              {/* <Venue /> */}
+              <h1>Venue Information </h1>
+              <p>(This information cannot be changed once submitted)</p>
               <FormControl required fullWidth>
                 <InputLabel htmlFor="venueName">Name</InputLabel>
                 <Input id="venueName" name="event[venue_attributes][name]" autoComplete="venueName"

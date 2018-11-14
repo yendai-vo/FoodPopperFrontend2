@@ -37,7 +37,7 @@ export default class Profile extends Component {
   }
 
   render() {
-    //console.log(this.state.reservations)
+    console.log(this.state.reservations)
     //debugger
     return (
       <div>
