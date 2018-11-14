@@ -80,7 +80,7 @@ class EditEvent extends Component {
             <form className={classes.form} onSubmit={this.createEvent}>
               <FormControl margin="normal" required fullWidth>
                 <InputLabel htmlFor="title">Event Title</InputLabel>
-                <Input id="title" name="event[title]" autoComplete="title" autoFocus
+                <Input id="title" name="event[title]" autoFocus
                   onChange={this.handleEditChange}
                   value={this.props.title}
                 />
@@ -88,8 +88,7 @@ class EditEvent extends Component {
 
               <FormControl margin="normal" required fullWidth>
                 <InputLabel htmlFor="description">Description</InputLabel>
-                <Input id="description" name="event[description]" autoComplete="description"
-                  onChange={this.handleEditChange}
+                <Input id="description" name="event[description]" 
                   value={this.props.description}
                   multiline
                 />
@@ -97,7 +96,7 @@ class EditEvent extends Component {
 
               <FormControl margin="normal" required fullWidth>
                 <InputLabel htmlFor="capacity">Capacity</InputLabel>
-                <Input id="capacity" name="event[capacity]" autoComplete="capacity"
+                <Input id="capacity" name="event[capacity]" 
                   onChange={this.handleEditChange}
                   value={this.props.capacity}
                   type="number"

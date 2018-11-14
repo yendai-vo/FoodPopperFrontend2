@@ -30,8 +30,8 @@ const styles = theme => ({
     padding: theme.spacing.unit * 2,
   },
   image: {
-    width: 128,
-    height: 128,
+    width: 200,
+    height: 200,
   },
   img: {
     margin: 'auto',
@@ -132,10 +132,9 @@ class EventCard extends React.Component {
 
   render() {
     const { classes, title, dateTime, description, capacity, price, venueName, venueAddress, venueCity, venueState, venueZipCode, id, image, userId } = this.props;
-    console.log(userId)
+    
     return (
       <Paper className={classes.root} >
-      {/* style={{float:"left"}} */}
         <Grid container spacing={16} >
           <Grid item >
             <ButtonBase className={classes.image}>
@@ -162,17 +161,12 @@ class EventCard extends React.Component {
                 <ExpandMoreIcon />
                 </IconButton>
                 <Collapse in={this.state.expanded} timeout="auto" unmountOnExit>
-
-
-
-
                   <Typography >Date and Time: {dateTime}</Typography>
                   <Typography >Capacity: {capacity} seats</Typography>
                   <Typography >Price per seat: ${price}0</Typography>
                   <Typography >Venue: {venueName}</Typography>
                   <Typography >Address: {venueAddress}</Typography>
-                  <Typography >{venueCity}, {venueState} {venueZipCode}</Typography>
-
+                  <Typography >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{venueCity}, {venueState} {venueZipCode}</Typography>
                 </Collapse>
 
               </Grid>
@@ -219,7 +213,6 @@ class EventCard extends React.Component {
                       </DialogContentText>
                     </DialogContent>
                   </Dialog>: null} */}
-                
                 
                 <Dialog
                   open={this.state.open}
