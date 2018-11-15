@@ -143,15 +143,6 @@ class Signup extends Component {
                 />
               </FormControl>
 
-              <FormControl margin="normal" required fullWidth>
-                <Input
-                  name="image"
-                  id="image"
-                  onChange={this.handleChange}
-                  type="file"
-                />
-              </FormControl>
-
               <Button
                 type="submit"
                 fullWidth

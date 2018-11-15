@@ -114,7 +114,7 @@ class ContactUs extends Component {
               <FormControl required fullWidth multiline>
                 <TextField fullWidth
                   id="message"
-                  label="message"
+                  label="Message"
                   type="message"
                   name="message"
                   multiline

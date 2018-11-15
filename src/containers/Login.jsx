@@ -20,6 +20,7 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 
 const styles = theme => ({
+  
   layout: {
     width: 'auto',
     display: 'block', // Fix IE11 issue.
@@ -48,6 +49,9 @@ const styles = theme => ({
   },
   submit: {
     marginTop: theme.spacing.unit * 3,
+    background: '#b6f5b6',
+    color: '#f50057',
+    fontWeight: 'bold',
   },
 });
 
@@ -110,7 +114,7 @@ class Login extends Component {
     return (
       <React.Fragment>
         <CssBaseline />
-        <main className={classes.layout}>
+        <main className={classes.layout} >
           <Paper className={classes.paper}>
             <Avatar className={classes.avatar}>
               <LockIcon />
@@ -162,7 +166,7 @@ class Login extends Component {
                 </DialogContentText>
               </DialogContent>
               <DialogActions>
-                <Button onClick={this.handleCloseDialog} color="primary">
+                <Button onClick={this.handleCloseDialog} className={classes.button}>
                   Close
                 </Button>
               </DialogActions>

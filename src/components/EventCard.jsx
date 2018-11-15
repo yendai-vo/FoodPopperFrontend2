@@ -89,14 +89,6 @@ class EventCard extends React.Component {
     this.setState({ editOpen: false });
   };
 
-  // getDate = () => {
-  //   let str = this.state.dateTime;
-  //   str.split('T');
-  //   this.setState({
-  //     dateTime: str
-  //   })
-  // }
-
   handleChange = reservation => event => {
     this.setState({
       noOfTickets: event.target.value,
@@ -130,7 +122,7 @@ class EventCard extends React.Component {
 
   render() {
     const { classes, title, dateTime, description, capacity, price, venueName, venueAddress, venueCity, venueState, venueZipCode, id, image, userId } = this.props;
-    
+    let date = new Date(dateTime)
     return (
       <Paper className={classes.root} >
         <Grid container spacing={16} >
@@ -159,7 +151,7 @@ class EventCard extends React.Component {
                 <ExpandMoreIcon />
                 </IconButton>
                 <Collapse in={this.state.expanded} timeout="auto" unmountOnExit>
-                  <Typography >Date and Time: {dateTime}</Typography>
+                  <Typography >Date and Time: {date.toLocaleString()}</Typography>
                   <Typography >Capacity: {capacity} seats</Typography>
                   <Typography >Price per seat: ${price}0</Typography>
                   <Typography >Venue: {venueName}</Typography>
