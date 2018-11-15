@@ -62,7 +62,7 @@ class Events extends Component {
     description: '',
     capacity: null,
     price: 0.00,
-    dateTime: "2018-11-14T10:30",
+    dateTime: "2018-11-15T21:30",
     image_url: '',
     venueName: '',
     venueAddress: '',
