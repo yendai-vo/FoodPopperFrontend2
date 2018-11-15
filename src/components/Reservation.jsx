@@ -9,10 +9,10 @@ export default class Reservation extends Component {
             <Typography >Event: {this.props.title}</Typography>
             <Typography >Date & Time: {this.props.dateTime}</Typography>
             <Typography >Location: {this.props.venueName}<br></br>
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{this.props.venueAddress}<br></br>
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{this.props.venueCity}, {this.props.venueState} {this.props.venueZipCode}
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{this.props.venueAddress}<br></br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{this.props.venueCity}, {this.props.venueState} {this.props.venueZipCode}
             </Typography>
-            <Typography >Seats Available: ???</Typography>
+            <Typography >Seats Available: Yes</Typography>
         </div>
 
         <div>

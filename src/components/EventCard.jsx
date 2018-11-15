@@ -136,7 +136,7 @@ class EventCard extends React.Component {
             <Grid item xs container direction="column" spacing={16}>
               <Grid item xs key={id}>
                 <Typography gutterBottom variant="subtitle1">
-                  {title}
+                  <h1><strong>{title}</strong></h1>
                 </Typography><br></br>
                 <Typography gutterBottom>{description}</Typography><br></br>
                 <IconButton
