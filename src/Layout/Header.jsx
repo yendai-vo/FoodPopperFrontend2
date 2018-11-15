@@ -10,6 +10,9 @@ import Button from '@material-ui/core/Button';
 
 
 const styles = {
+  navbar:{
+    background:'#b6f5b6',
+  },
   root: {
     flexGrow: 1,
   },
@@ -21,8 +24,15 @@ const styles = {
     marginRight: 20,
   },
   button: {
-    color: 'white',
+    color: '#bb0000',
   },
+  link: {
+    color: '#bb0000',
+    textDecoration: 'none',
+    '&:focus, &:hover, &:visited, &:link, &:active':{
+      color: '#bb0000'
+    }
+  }
 };
 
 class ButtonAppBar extends Component {
@@ -38,19 +48,19 @@ class ButtonAppBar extends Component {
     return (
       <div className={classes.root}>
         <AppBar position="static">
-          <Toolbar >
+          <Toolbar className={classes.navbar} >
             {/* <IconButton className={classes.menuButton} color="secondary" aria-label="Menu">
               <MenuIcon />
             </IconButton> */}
             <Typography variant="h6" color="white" className={classes.grow}>
-              FoodPopper
+            <Link className={classes.link} to="/">FoodPopper</Link>
             </Typography>
-            <Button className={classes.button}><Link to="/home">Home</Link></Button>
-            {jwt && <Button ><Link to="/events">Create Event</Link></Button>}
-            {jwt && <Button ><Link to="/profile">Profile</Link></Button>}
-            {!jwt && <Button ><Link to="/signup">SignUp</Link></Button>}
-            {!jwt && <Button ><Link to="/login">Login</Link></Button>}
-            {jwt && <Button onClick={this.handleLogoutClick}>Logout</Button>}
+            {jwt && <Button className={classes.button}><Link className={classes.link} to="/">Home</Link></Button>}
+            {jwt && <Button className={classes.button} ><Link className={classes.link} to="/events">Create Event</Link></Button>}
+            {jwt && <Button className={classes.button} ><Link className={classes.link} to="/profile">Profile</Link></Button>}
+            {!jwt && <Button className={classes.button} ><Link className={classes.link}to="/signup">SignUp</Link></Button>}
+            {!jwt && <Button className={classes.button} ><Link className={classes.link}to="/login">Login</Link></Button>}
+            {jwt && <Button className={classes.button} onClick={this.handleLogoutClick}>Logout</Button>}
           </Toolbar>
         </AppBar>
       </div>

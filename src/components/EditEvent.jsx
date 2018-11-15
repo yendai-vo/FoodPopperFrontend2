@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import axios from 'axios';
 import PropTypes from 'prop-types';
 import FormControl from '@material-ui/core/FormControl';
 import Input from '@material-ui/core/Input';
@@ -6,7 +7,6 @@ import InputLabel from '@material-ui/core/InputLabel';
 import Button from '@material-ui/core/Button';
 import Paper from '@material-ui/core/Paper';
 import withStyles from '@material-ui/core/styles/withStyles';
-import InputAdornment from '@material-ui/core/InputAdornment';
 import TextField from '@material-ui/core/TextField';
 
 const styles = theme => ({
@@ -53,22 +53,48 @@ const styles = theme => ({
     }
   });
 class EditEvent extends Component {
+
+  
   state = {
     title: '',
     description: '',
     capacity: null,
     dateTime: '',
   }
+  
+  componentDidMount(){
+    if(this.state.title.length < 1){
+      this.setState({
+        title: this.props.title,
+        description: this.props.description,
+        capacity: this.props.capacity,
+      });
+    }
+  }
 
-  handleEditChange = edit => event => {
-    const target = event.target;
-    const value = target.value;
-    const name = target.name;
-
-    this.setState({
-      [name]: value
-    });
+  handleEditChange = (event) => {
+    this.setState({[event.target.name]: event.target.value});
   };
+
+  handleEditSubmit = e => {
+    e.preventDefault();
+    axios.patch(`http://localhost:3001/events/${this.props.id}`,
+    {
+      'event':{
+        'title': this.state.title,
+        'description': this.state.description,
+        'capacity': this.state.capacity,
+        'date_time': this.state.dateTime
+      }
+    },
+    {
+      headers: { 'Authorization': `Bearer ${localStorage.getItem('jwt')}` }
+    }
+  )
+
+    console.log('edit was submitted')
+    // .then(this.handleClose)  
+  }
 
   render() {
     const { classes } = this.props;
@@ -77,28 +103,30 @@ class EditEvent extends Component {
         <h1 className={classes.title}>Edit Your Poppin' Event Here!</h1>
         <main className={classes.layout}>
           <Paper className={classes.paper}>
-            <form className={classes.form} onSubmit={this.createEvent}>
+            <form className={classes.form} onSubmit={this.handleEditSubmit}>
               <FormControl margin="normal" required fullWidth>
                 <InputLabel htmlFor="title">Event Title</InputLabel>
-                <Input id="title" name="event[title]" autoFocus
+                <Input id="title" name="title" autoFocus
                   onChange={this.handleEditChange}
-                  value={this.props.title}
+                  value={this.state.title}
                 />
               </FormControl>
 
               <FormControl margin="normal" required fullWidth>
                 <InputLabel htmlFor="description">Description</InputLabel>
-                <Input id="description" name="event[description]" 
-                  value={this.props.description}
+                <Input id="description" name="description" 
+                  value={this.state.description}
+                  onChange={this.handleEditChange}
                   multiline
                 />
               </FormControl>
 
               <FormControl margin="normal" required fullWidth>
                 <InputLabel htmlFor="capacity">Capacity</InputLabel>
-                <Input id="capacity" name="event[capacity]" 
+                <Input id="capacity" name="capacity" 
                   onChange={this.handleEditChange}
-                  value={this.props.capacity}
+                  value={this.state.capacity}
+                  defaultValue='0'
                   type="number"
                 />
               </FormControl>
@@ -108,7 +136,7 @@ class EditEvent extends Component {
                   id="datetime-local"
                   label="Date and Time"
                   type="datetime-local"
-                  name="event[date_time]"
+                  name="date_time"
                   onChange={this.handleEditChange}
                   //value={this.props.dateTime}
                   defaultValue="2018-11-14T10:30"
@@ -118,7 +146,8 @@ class EditEvent extends Component {
                   }}
                 />
               </FormControl>
-           
+              <Button type='submit' color="primary">Submit Edit</Button>
+
             </form>
           </Paper>
         </main>

@@ -6,12 +6,19 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import withStyles from '@material-ui/core/styles/withStyles';
 
 import SearchBar from '../components/SearchBar';
 import EventCard from '../components/EventCard';
 import Map from '../components/Map';
 
-export default class Home extends Component {
+const styles = {
+  eventsList:{
+    display: "flex",
+    flexWrap: "wrap"
+  }
+}
+class Home extends Component {
 
   state = {
     events: [],
@@ -20,6 +27,7 @@ export default class Home extends Component {
     welcomeMessage: localStorage.getItem('loginmessage') === "true",
     username: localStorage.getItem('username'),
     search: '',
+    userId: localStorage.getItem('userId'),
   }
 
   componentDidMount() {
@@ -95,9 +103,9 @@ export default class Home extends Component {
             </Button>
           </DialogActions>
         </Dialog>
+        <div className={ this.props.classes.eventsList}>
         {this.filterEvents().map(item => (
-          <div>
-            {this.state.events ?
+            this.state.events ?
               <EventCard
                 userId={item.user_id}
                 id={item.id}
@@ -113,9 +121,9 @@ export default class Home extends Component {
                 venueState={item.venue.state}
                 venueZipCode={item.venue.zip_code}
               />
-            : <p>Loading</p>}
-          </div>
+            : <p>Loading</p>
         ))}
+        </div>
         <Map 
           isMarkerShown
   googleMapURL="https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places"
@@ -127,3 +135,5 @@ export default class Home extends Component {
 
   }
 }
+
+export default withStyles(styles)(Home);

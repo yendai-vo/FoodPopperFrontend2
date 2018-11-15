@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import axios from 'axios';
 import ReservationCard from '../components/ReservationCard';
 import UserInfo from '../components/UserInfo';
+import ContactUs from '../components/ContactUs';
 
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
@@ -9,6 +10,8 @@ import Typography from '@material-ui/core/Typography';
 import AppBar from '@material-ui/core/AppBar';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
+import Grid from '@material-ui/core/Grid';
+import Paper from '@material-ui/core/Paper';
 
 
 function TabContainer(props) {
@@ -27,6 +30,16 @@ const styles = theme => ({
   tabRoot: {
     flexGrow: 1,
     backgroundColor: theme.palette.background.paper,
+  },
+  paper: {
+    padding: theme.spacing.unit * 2,
+    textAlign: 'center',
+    color: theme.palette.text.secondary,
+  },
+  image: {
+    height: 150,
+    width: 'auto',
+    flexGrow: 1,
   },
 });
 
@@ -72,15 +85,13 @@ class Profile extends Component {
     const { value } = this.state;
     return (
       <div className={classes.tabRoot}>
-      Welcome, {this.state.username}!
+      {/* Welcome, {this.state.username}! */}
       
-        <AppBar position="static">
           <Tabs value={value} onChange={this.handleChange}>
             <Tab label="Profile" />
             <Tab label="Your Reservations" />
             <Tab label="Contact Us" />
           </Tabs>
-        </AppBar>
         {value === 0 && 
         <TabContainer>
           <UserInfo 
@@ -107,7 +118,22 @@ class Profile extends Component {
         </TabContainer>}
 
         {value === 2 && <TabContainer>
-          Contact Us!
+          <Grid container spacing={24}>
+            <Grid item xs={6}>
+              <Paper className={classes.paper}>
+                <ContactUs />
+              </Paper>
+            </Grid>
+            <Grid item xs={6}>
+                <Paper className={classes.paper}>
+                  <Typography>Email: info@foodpopper.com</Typography>
+                  <Typography>Address: 123 Food Popper Circle</Typography>
+                  <Typography>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Houston, TX 77007</Typography>
+                  <Typography>Phone: 123-456-7890</Typography>
+                  <img className={classes.image} alt="complex" src='https://charterschoolcapital.org/wp-content/uploads/2017/03/social-media-icons.png' />
+                </Paper>
+            </Grid>
+          </Grid>
         </TabContainer>}
       </div>
     )

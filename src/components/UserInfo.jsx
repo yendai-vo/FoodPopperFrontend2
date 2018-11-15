@@ -15,11 +15,11 @@ import FormControl from '@material-ui/core/FormControl';
 import Input from '@material-ui/core/Input';
 import InputLabel from '@material-ui/core/InputLabel';
 import Paper from '@material-ui/core/Paper';
+import Grid from '@material-ui/core/Grid';
 
 const styles = theme => ({
   root: {
     width: '100%',
-    maxWidth: '360px',
     backgroundColor: theme.palette.background.paper,
   },
   form: {
@@ -33,11 +33,20 @@ const styles = theme => ({
     alignItems: 'center',
     padding: `${theme.spacing.unit * 2}px ${theme.spacing.unit * 3}px ${theme.spacing.unit * 3}px`,
   },
+  gridPaper: {
+    padding: theme.spacing.unit * 2,
+    textAlign: 'center',
+    color: theme.palette.text.secondary,
+  },
   image: {
     float: 'left',
   },
   list: {
+    width: '100%',
     float: 'right',
+  },
+  listItem: {
+    alignItems: "flex-start",
   }
 });
 
@@ -58,63 +67,72 @@ class UserInfo extends React.Component {
   };
 
   handleEditChange = (event) => {
-    this.setState({[event.target.name]: event.target.value});
+    this.setState({ [event.target.name]: event.target.value });
   };
 
   handleEditSubmit = () => {
     console.log('edit was submitted')
     axios.patch(`http://localhost:3001/user/${this.props.userId}`,
-    {
-      'user':{
-        'username': this.state.username,
-        'email': this.state.email,
-        'bio': this.state.bio,
+      {
+        'user': {
+          'username': this.state.username,
+          'email': this.state.email,
+          'bio': this.state.bio,
+        }
+      },
+      {
+        headers: { 'Authorization': `Bearer ${localStorage.getItem('jwt')}` }
       }
-    },
-    {
-      headers: { 'Authorization': `Bearer ${localStorage.getItem('jwt')}` }
-    }
-  )
-    .then((user) => {
-      this.props.editProfile(user.data)
-    }).catch((error) => {
-      console.log(error);
-    })
-    .then(this.handleClose)
+    )
+      .then((user) => {
+        this.props.editProfile(user.data)
+      }).catch((error) => {
+        console.log(error);
+      })
+      .then(this.handleClose)
   }
 
   render() {
     const { classes, username, email, bio } = this.props;
     return (
       <div className={classes.root}>
-        <ButtonBase className={classes.image}>
-          <img className={classes.img} alt="complex" src='https://www.servedfromscratch.com/wp-content/uploads/2015/04/spoon-and-fork-png-fork-spoon-knife-300x300.png' />
-        </ButtonBase>
-        <List component="nav" className={classes.list}>
-          <ListItem button>
-            <ListItemText primary="Username:" />{username}
-          </ListItem>
-          <Divider />
-          <ListItem button divider>
-            <ListItemText primary="Email:" />{email}
-          </ListItem>
-          <ListItem button>
-            <ListItemText primary="Bio:" />{bio}
-          </ListItem>
-          <Divider light />
-        </List>
-        <Button onClick={this.handleClickOpen} color="secondary">Edit Your Profile</Button>
-
-        <Dialog
-          open={this.state.open}
-          onClose={this.handleClose}
-          aria-labelledby="form-dialog-title"
-        >
-          <DialogContent>
-            <h1>Edit Your Profile</h1>
+        <Grid container spacing={24}>
+          <Grid item xs={6}>
+            
+              
+                <img className={classes.img} alt="complex" src='https://www.servedfromscratch.com/wp-content/uploads/2015/04/spoon-and-fork-png-fork-spoon-knife-300x300.png' />
+              
+           
+          </Grid>
+          <Grid item xs={6}>
+            
+              <List component="nav" className={classes.list}>
+                <ListItem className={classes.listItem} button>
+                  <ListItemText primary="Username:" />{username}
+                </ListItem>
+                <Divider />
+                <ListItem className={classes.listItem} button divider>
+                  <ListItemText primary="Email:" />{email}
+                </ListItem>
+                <ListItem className={classes.listItem} button>
+                  <ListItemText primary="Bio:" />{bio}
+                </ListItem>
+                <Divider light />
+              </List>
+              <Button onClick={this.handleClickOpen} color="secondary">Edit Your Profile</Button>
+            
+          </Grid>
+        </Grid>
+          <Dialog
+            open={this.state.open}
+            onClose={this.handleClose}
+            aria-labelledby="form-dialog-title"
+          >
+            <DialogContent>
+              <h1>Edit Your Profile</h1>
               <Paper className={classes.paper}>
                 <form className={classes.form} onSubmit={this.createEvent}>
-                  
+
                   <FormControl margin="normal" required fullWidth>
                     <InputLabel htmlFor="username">Username</InputLabel>
                     <Input id="username" name="username" autoFocus
@@ -140,25 +158,25 @@ class UserInfo extends React.Component {
                   </FormControl>
                 </form>
               </Paper>
-            
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={this.handleClose} color="primary">
-              Cancel
+
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={this.handleClose} color="primary">
+                Cancel
             </Button>
-            <Button onClick={this.handleEditSubmit} color="primary">
-              Submit
+              <Button onClick={this.handleEditSubmit} color="primary">
+                Submit
             </Button>
-          </DialogActions>
-        </Dialog>
+            </DialogActions>
+          </Dialog>
       </div>
-    );
-  };
-}
-
-
+        );
+      };
+    }
+    
+    
 UserInfo.propTypes = {
-  classes: PropTypes.object.isRequired,
-};
-
+          classes: PropTypes.object.isRequired,
+      };
+      
 export default withStyles(styles)(UserInfo);

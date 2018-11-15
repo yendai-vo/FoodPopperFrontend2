@@ -26,17 +26,15 @@ import TextField from '@material-ui/core/TextField';
 const styles = theme => ({
   root: {
     flexGrow: 1,
-    maxWidth: 600,
     padding: theme.spacing.unit * 2,
+    width: "29%"
   },
   image: {
-    width: 200,
-    height: 200,
   },
   img: {
     margin: 'auto',
     display: 'block',
-    maxWidth: '100%',
+    width: '100%',
     maxHeight: '100%',
   },
   expand: {
@@ -68,7 +66,7 @@ class EventCard extends React.Component {
     noOfTickets: 1,
     isActive: false,
     chosenEvent: [],
-    editOpen: false
+    editOpen: false,
   };
 
   handleExpandClick = () => {
@@ -121,14 +119,14 @@ class EventCard extends React.Component {
     this.setState({ open: false });
   }
 
-  handleEditSubmit = (e) => {
-    axios.patch('http://localhost:3001/events')
-    .then((success) => {
-      console.log(success);
-    }).catch((error) => {
-      console.log(error);
-    });
-  }
+  // handleEditSubmit = (id) => {
+  //   axios.patch(`http://localhost:3001/events/${id}`)
+  //   .then((success) => {
+  //     console.log(success);
+  //   }).catch((error) => {
+  //     console.log(error);
+  //   });
+  // }
 
   render() {
     const { classes, title, dateTime, description, capacity, price, venueName, venueAddress, venueCity, venueState, venueZipCode, id, image, userId } = this.props;
@@ -188,32 +186,17 @@ class EventCard extends React.Component {
                         description={description}
                         dateTime={dateTime}
                         capacity={capacity}
+                        userId={userId}
+                        id={id}
                       />
                     </DialogContentText>
                   </DialogContent>
                   <DialogActions>
                     <Button onClick={this.handleCloseEdit} color="primary">Cancel</Button>
-                    <Button type='submit' onClick={this.handleEditSubmit} color="primary">Submit Edit</Button>
 
                   </DialogActions>
                 </Dialog>
-                {/* {this.state.editOpen ? 
-                  <Dialog
-                    open={this.state.openEdit}
-                    onClose={this.handleCloseEdit}
-                    aria-labelledby="alert-dialog-title"
-                    aria-describedby="alert-dialog-description"
-                  >
-                    <DialogTitle id="form-dialog-title">Edit Your Event Here!</DialogTitle>
-                    <DialogContent>
-                      <DialogContentText>
-                        <EditEvent 
-                          title={title}
-                        />
-                      </DialogContentText>
-                    </DialogContent>
-                  </Dialog>: null} */}
-                
+      
                 <Dialog
                   open={this.state.open}
                   onClose={this.handleCloseReservation}
@@ -257,16 +240,11 @@ class EventCard extends React.Component {
                 </Dialog>
               </Grid>
             </Grid>
-            <Grid item>
-              {/* <Typography variant="subtitle1">$19.00</Typography> */}
-            </Grid>
           </Grid>
         </Grid>
       </Paper>
     );
-
   }
-
 }
 
 EventCard.propTypes = {

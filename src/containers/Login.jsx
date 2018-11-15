@@ -13,7 +13,11 @@ import LockIcon from '@material-ui/icons/LockOutlined';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import withStyles from '@material-ui/core/styles/withStyles';
-
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
 
 const styles = theme => ({
   layout: {
@@ -52,7 +56,13 @@ class Login extends Component {
     jwt: '',
     email: '',
     password: '',
+    error: false,
   }
+
+  handleCloseDialog = () => {
+    this.setState({ error: false })
+  }
+
 
   handleInputChange = (event) => {
     const target = event.target;
@@ -88,7 +98,9 @@ class Login extends Component {
         this.props.history.push("/home")
       })
     })
-    .catch(error => console.log(error))
+    .catch(error => {
+      this.setState({error: true});
+    })
   }
 
   
@@ -139,6 +151,22 @@ class Login extends Component {
                 Sign in
             </Button>
             </form>
+            <Dialog
+              open={this.state.error}
+              onClose={this.handleCloseDialog}
+            >
+              <DialogTitle id="alert-dialog-title">Incorrect Email/Password</DialogTitle>
+              <DialogContent>
+                <DialogContentText id="alert-dialog-description">
+                  Please make sure that you entered correct information
+                </DialogContentText>
+              </DialogContent>
+              <DialogActions>
+                <Button onClick={this.handleCloseDialog} color="primary">
+                  Close
+                </Button>
+              </DialogActions>
+            </Dialog>
           </Paper>
         </main>
       </React.Fragment>
