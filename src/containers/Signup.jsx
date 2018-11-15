@@ -14,6 +14,7 @@ import withStyles from '@material-ui/core/styles/withStyles';
 
 const styles = theme => ({
     layout: {
+      paddingTop: 20,
       width: 'auto',
       display: 'block', // Fix IE11 issue.
       marginLeft: theme.spacing.unit * 3,
@@ -42,7 +43,14 @@ const styles = theme => ({
     submit: {
       marginTop: theme.spacing.unit * 3,
     },
-    
+    background: {
+      backgroundImage: "url(" + "https://images.pexels.com/photos/349609/pexels-photo-349609.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940" + ")",
+      height: 700,
+      width: 'auto',
+      backgroundPosition: 'center',
+      backgroundSize: 'cover',
+      backgroundRepeat: 'no-repeat',
+    },
   });
 class Signup extends Component {
 
@@ -86,6 +94,7 @@ class Signup extends Component {
     return (
         <React.Fragment>
         <CssBaseline />
+        <div className={classes.background}>
         <main className={classes.layout}>
           <Paper className={classes.paper}>
             <Avatar className={classes.avatar}>
@@ -157,6 +166,7 @@ class Signup extends Component {
             <p>Already have an account? <a href='/login'>Login</a></p>
           </Paper>
         </main>
+        </div>
       </React.Fragment>
     )
   }

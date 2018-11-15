@@ -85,7 +85,7 @@ class Home extends Component {
     .catch(error => console.log(error))
     return (
       <div>
-        <p>Welcome, {this.state.username}!</p>
+        <h2>&nbsp;&nbsp;&nbsp;Welcome, {this.state.username}!</h2>
         <SearchBar search={this.handleChange}/>
         <Dialog
           open={this.state.welcomeMessage}

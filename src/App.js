@@ -4,7 +4,6 @@ import './App.css';
 import Header from './Layout/Header';
 import Content from './Layout/Content';
 import Footer from './Layout/Footer';
-import breadTable from './Images/breadTable.jpg'
 
 const theme = createMuiTheme({
   palette: {
@@ -16,17 +15,14 @@ const theme = createMuiTheme({
     secondary: {
       main: '#f50057'
     },
-    background: {
-      backgroundImage: `url(${breadTable})`
-    }
   },
 });
 class App extends Component {
 
   render() {
-   
+    const { classes } = this.props;
     return (
-      <div >
+      <div>
         <MuiThemeProvider theme={theme}>
           <Header/>
           <Content>{this.props.children}</Content>

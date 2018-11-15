@@ -18,10 +18,12 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import breadTable from '../Images/breadTable.jpg'
 
 const styles = theme => ({
   
   layout: {
+    paddingTop: 50,
     width: 'auto',
     display: 'block', // Fix IE11 issue.
     marginLeft: theme.spacing.unit * 3,
@@ -30,10 +32,19 @@ const styles = theme => ({
       width: 400,
       marginLeft: 'auto',
       marginRight: 'auto',
+      marginTop: 0,
     },
   },
+  background: {
+    backgroundImage: "url(" + "https://images.pexels.com/photos/349609/pexels-photo-349609.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940" + ")",
+    height: 700,
+    width: 'auto',
+    backgroundPosition: 'center',
+    backgroundSize: 'cover',
+    backgroundRepeat: 'no-repeat',
+    
+  },
   paper: {
-    marginTop: theme.spacing.unit * 8,
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
@@ -114,6 +125,7 @@ class Login extends Component {
     return (
       <React.Fragment>
         <CssBaseline />
+        <div className={classes.background}>
         <main className={classes.layout} >
           <Paper className={classes.paper}>
             <Avatar className={classes.avatar}>
@@ -173,6 +185,7 @@ class Login extends Component {
             </Dialog>
           </Paper>
         </main>
+        </div>
       </React.Fragment>
     )
   }
